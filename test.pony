@@ -23,7 +23,7 @@ actor _TestPublisher is ManagedPublisher[U64]
 
   new create(h: TestHelper, subs: U64, qbounds: U64 = U64.max_value()) =>
     _h = h
-    _mgr = _mgr.create(this, qbounds)
+    _mgr = Unicast[U64](this, qbounds)
     _subs = subs
 
   fun ref _subscriber_manager(): SubscriberManager[U64] =>
