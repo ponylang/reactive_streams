@@ -130,13 +130,13 @@ class SubscriberManager[A: Any tag]
     end
     _reset()
 
-  fun ref on_error() =>
+  fun ref on_error(e: ReactiveError) =>
     """
     A ManagedPublisher should call this when its internal state has resulted in
     an error that should be propagated to all subscribers.
     """
     for sub in _map.keys() do
-      sub.on_error()
+      sub.on_error(e)
     end
     _reset()
 
@@ -156,8 +156,7 @@ class SubscriberManager[A: Any tag]
     let prev = _map(sub) = _SubscriberState
 
     if prev isnt None then
-      // TODO: let the subscriber know they have double subscribed
-      sub.on_error()
+      sub.on_error(SubscribedAlready)
     end
 
     sub.on_subscribe(_Subscription[A](sub, _pub))

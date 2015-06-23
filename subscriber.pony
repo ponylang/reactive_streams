@@ -37,7 +37,7 @@ interface Subscriber[A: Any tag] tag
     """
     None
 
-  be on_error(/*some error state*/) =>
+  be on_error(e: ReactiveError) =>
     """
     Failed terminal state.
 
