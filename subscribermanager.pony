@@ -68,6 +68,16 @@ class SubscriberManager[A: Any tag]
       return
     end
 
+    if _max_request == 0 then
+      // No subscribers have pending demand.
+      if _queue.size() == _qbound then
+        try _queue.shift() end
+      end
+
+      _queue.push(a)
+      return
+    end
+
     if _min_request > 0 then
       // All subscribers have pending demand. Send the new data to them all,
       // reducing each one's request count. Also reduce _min_request.
