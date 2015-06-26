@@ -93,7 +93,7 @@ class Unicast[A: Any tag]
 
     _queue.clear()
 
-  fun ref _on_subscribe(sub: Subscriber[A]) =>
+  fun ref on_subscribe(sub: Subscriber[A]) =>
     """
     A ManagedPublisher should call this when it receives Publisher.subscribe.
     """
@@ -113,7 +113,7 @@ class Unicast[A: Any tag]
       sub.on_error(PublisherFull)
     end
 
-  fun ref _on_request(sub: Subscriber[A], n: U64) =>
+  fun ref on_request(sub: Subscriber[A], n: U64) =>
     """
     A ManagedPublisher should call this when it receives
     ManagedPublisher._on_request.
@@ -129,7 +129,7 @@ class Unicast[A: Any tag]
       end
     end
 
-  fun ref _on_cancel(sub: Subscriber[A]) =>
+  fun ref on_cancel(sub: Subscriber[A]) =>
     """
     A ManagedPublisher should call this when it receives
     ManagedPublisher._on_cancel.

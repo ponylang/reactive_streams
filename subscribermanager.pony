@@ -49,18 +49,18 @@ interface SubscriberManager[A: Any tag]
     an error that should be propagated to all subscribers.
     """
 
-  fun ref _on_subscribe(sub: Subscriber[A])
+  fun ref on_subscribe(sub: Subscriber[A])
     """
     A ManagedPublisher should call this when it receives Publisher.subscribe.
     """
 
-  fun ref _on_request(sub: Subscriber[A], n: U64)
+  fun ref on_request(sub: Subscriber[A], n: U64)
     """
     A ManagedPublisher should call this when it receives
     ManagedPublisher._on_request.
     """
 
-  fun ref _on_cancel(sub: Subscriber[A])
+  fun ref on_cancel(sub: Subscriber[A])
     """
     A ManagedPublisher should call this when it receives
     ManagedPublisher._on_cancel.
@@ -87,7 +87,7 @@ class _Subscription[A: Any tag] iso is Subscription
     Request more data. NOP if the subscription has been cancelled.
     """
     if not _cancelled and (n > 0) then
-      _pub._on_request(_sub, n)
+      _pub.on_request(_sub, n)
     end
 
   fun ref cancel() =>
@@ -96,5 +96,5 @@ class _Subscription[A: Any tag] iso is Subscription
     """
     if not _cancelled then
       _cancelled = true
-      _pub._on_cancel(_sub)
+      _pub.on_cancel(_sub)
     end

@@ -148,7 +148,7 @@ class Broadcast[A: Any tag] is SubscriberManager[A]
     _min_request = 0
     _max_request = 0
 
-  fun ref _on_subscribe(sub: Subscriber[A]) =>
+  fun ref on_subscribe(sub: Subscriber[A]) =>
     """
     A ManagedPublisher should call this when it receives Publisher.subscribe.
     """
@@ -161,7 +161,7 @@ class Broadcast[A: Any tag] is SubscriberManager[A]
     sub.on_subscribe(_Subscription[A](sub, _pub))
     _min_request = 0
 
-  fun ref _on_request(sub: Subscriber[A], n: U64) =>
+  fun ref on_request(sub: Subscriber[A], n: U64) =>
     """
     A ManagedPublisher should call this when it receives
     ManagedPublisher._on_request.
@@ -210,7 +210,7 @@ class Broadcast[A: Any tag] is SubscriberManager[A]
       end
     end
 
-  fun ref _on_cancel(sub: Subscriber[A]) =>
+  fun ref on_cancel(sub: Subscriber[A]) =>
     """
     A ManagedPublisher should call this when it receives
     ManagedPublisher._on_cancel.
