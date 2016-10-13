@@ -1,4 +1,4 @@
-interface Subscriber[A: Any tag] tag
+interface tag Subscriber[A: Any #share]
   """
   Will receive call to on_subscribe once after passing an instance of
   Subscriber to Publisher.subscribe.

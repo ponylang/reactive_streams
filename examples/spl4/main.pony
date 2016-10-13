@@ -1,4 +1,4 @@
-use "../reactive-streams"
+use "../.."
 use "time"
 use "collections"
 
@@ -16,10 +16,10 @@ actor Main
   var start: U64 = 0
   var repetitions: U64 = 16
   var arrived: U64 = 0
-  
+
   new create(env: Env) =>
     _env = env
-   restart() 
+    restart()
 
   be arrive() =>
     arrived = arrived + 1
@@ -79,7 +79,7 @@ actor Proc is ManagedPublisher[Bool]
   new create() =>
     _broadcast = Broadcast[Bool](this, Defaults.cap())
 
-  fun ref _subscriber_manager(): SubscriberManager[Bool] => 
+  fun ref _subscriber_manager(): SubscriberManager[Bool] =>
     _broadcast
 
   be on_subscribe(s: Subscription iso) =>
@@ -88,7 +88,7 @@ actor Proc is ManagedPublisher[Bool]
 
   be on_next(a: Bool) =>
     _count = _count + 1
-    
+
     if (_count and ((Defaults.cap() >> 1) - 1)) == 0 then
       _sub.request(Defaults.cap() >> 1)
     end
@@ -96,7 +96,7 @@ actor Proc is ManagedPublisher[Bool]
     _broadcast.publish(a)
 
     if _broadcast.queue_size() > 0 then
-      @printf[I32]("PUB %p queue %lu\n".cstring(), 
+      @printf[I32]("PUB %p queue %lu\n".cstring(),
         this, _broadcast.queue_size())
     end
 
