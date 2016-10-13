@@ -1,6 +1,6 @@
 use "collections"
 
-class Unicast[A: Any tag]
+class Unicast[A: Any #share]
   """
   Send data to a single subscriber.
   """
@@ -39,7 +39,7 @@ class Unicast[A: Any tag]
     """
     Returns the current queue size.
     """
-    _queue.size()
+    _queue.size().u64()
 
   fun subscriber_count(): U64 =>
     """
@@ -58,7 +58,7 @@ class Unicast[A: Any tag]
         _request = _request - 1
         sub.on_next(a)
       else
-        if _queue.size() == _qbound then
+        if _queue.size().u64() == _qbound then
           _queue.shift()
         end
 

@@ -1,4 +1,4 @@
-interface SubscriberManager[A: Any tag]
+interface SubscriberManager[A: Any #share]
   """
   Manages a subscriber list.
   """
@@ -66,7 +66,7 @@ interface SubscriberManager[A: Any tag]
     ManagedPublisher._on_cancel.
     """
 
-class _Subscription[A: Any tag] iso is Subscription
+class iso _Subscription[A: Any #share] is Subscription
   """
   Implements Subscription[A], allowing a subscriber to a ManagedPublisher to
   request more data or cancel its subscription.

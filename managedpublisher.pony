@@ -1,4 +1,4 @@
-interface ManagedPublisher[A: Any tag] tag is Publisher[A]
+interface tag ManagedPublisher[A: Any #share] is Publisher[A]
   """
   A ManagedPublisher must have a SubscriberManager and give access to it.
   """

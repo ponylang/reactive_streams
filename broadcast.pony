@@ -1,6 +1,6 @@
 use "collections"
 
-class Broadcast[A: Any tag] is SubscriberManager[A]
+class Broadcast[A: Any #share] is SubscriberManager[A]
   """
   Broadcasts data to all subscribers.
   """
@@ -40,13 +40,13 @@ class Broadcast[A: Any tag] is SubscriberManager[A]
     """
     Returns the current queue size.
     """
-    _queue.size()
+    _queue.size().u64()
 
   fun subscriber_count(): U64 =>
     """
     Returns the current subscriber count.
     """
-    _map.size()
+    _map.size().u64()
 
   fun ref publish(a: A) =>
     """
@@ -59,7 +59,7 @@ class Broadcast[A: Any tag] is SubscriberManager[A]
 
     if _max_request == 0 then
       // No subscribers have pending demand.
-      if _queue.size() == _qbound then
+      if _queue.size().u64() == _qbound then
         try _queue.shift() end
       end
 
@@ -81,7 +81,7 @@ class Broadcast[A: Any tag] is SubscriberManager[A]
       return
     end
 
-    if _queue.size() == _qbound then
+    if _queue.size().u64() == _qbound then
       // We have hit our bound and must drop from the queue.
       try
         _queue.shift()
@@ -108,7 +108,7 @@ class Broadcast[A: Any tag] is SubscriberManager[A]
 
     // We aren't at the queue bound.
     _queue.push(a)
-    let pos = _queue.size()
+    let pos = _queue.size().u64()
 
     for (sub, state) in _map.pairs() do
       if state.request > 0 then
@@ -170,14 +170,15 @@ class Broadcast[A: Any tag] is SubscriberManager[A]
       let state = _map(sub)
       var inc = n
 
-      if (state.request == 0) and (state.queue_position < _queue.size()) then
+      if (state.request == 0) and (state.queue_position < _queue.size().u64())
+      then
         // Send pending backlog.
-        var count = inc.min(_queue.size() - state.queue_position)
+        var count = inc.min(_queue.size().u64() - state.queue_position)
 
         try
-          var node = _queue.index(state.queue_position)
+          var node = _queue.index(state.queue_position.usize())
 
-          for i in Range(0, count) do
+          for i in Range[U64](0, count) do
             sub.on_next(node())
 
             if node.has_next() then
@@ -252,7 +253,7 @@ class Broadcast[A: Any tag] is SubscriberManager[A]
 
     if min_queue_position > 0 then
       try
-        for i in Range(0, min_queue_position) do
+        for i in Range[U64](0, min_queue_position) do
           _queue.shift()
         end
       end

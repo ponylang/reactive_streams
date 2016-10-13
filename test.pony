@@ -1,20 +1,19 @@
 use "ponytest"
 
-actor Main
-  new create(env: Env) =>
-    let test = PonyTest(env)
+actor Main is TestList
+  new create(env: Env) => PonyTest(env, this)
+
+  fun tag tests(test: PonyTest) =>
     test(_TestOne)
-    test.complete()
 
 class _TestOne is UnitTest
-  new iso create() => None
   fun name(): String => "reactive-streams/One"
 
-  fun apply(h: TestHelper): TestResult =>
+  fun tag apply(h: TestHelper) =>
     let pub = _TestPublisher(h, 1)
     let sub = _TestSubscriber(h, pub)
     pub.test_one(sub)
-    LongTest
+    h.long_test(1_000_000_000)
 
 actor _TestPublisher is ManagedPublisher[U64]
   let _h: TestHelper
@@ -35,15 +34,13 @@ actor _TestPublisher is ManagedPublisher[U64]
       return
     end
 
-    try
-      _h.assert_eq[U64](_mgr.subscriber_count(), _subs)
-      _h.assert_eq[U64](_mgr.queue_size(), 0)
-      _mgr.publish(1)
-      _mgr.publish(2)
-      _mgr.publish(3)
-      _mgr.publish(4)
-      _mgr.publish(5)
-    end
+    _h.assert_eq[U64](_mgr.subscriber_count(), _subs)
+    _h.assert_eq[U64](_mgr.queue_size(), 0)
+    _mgr.publish(1)
+    _mgr.publish(2)
+    _mgr.publish(3)
+    _mgr.publish(4)
+    _mgr.publish(5)
 
     test_one_2(sub)
 
@@ -74,8 +71,5 @@ actor _TestSubscriber is Subscriber[U64]
     _sub.request(1)
 
   be test_one_2() =>
-    try
-      _h.assert_eq[U64](_sum, 15)
-    end
-
+    _h.assert_eq[U64](_sum, 15)
     _h.complete(true)
