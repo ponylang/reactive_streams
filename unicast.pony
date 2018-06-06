@@ -59,7 +59,7 @@ class Unicast[A: Any #share]
         sub.on_next(a)
       else
         if _queue.size().u64() == _qbound then
-          _queue.shift()
+          _queue.shift()?
         end
 
         _queue.push(a)
@@ -123,7 +123,7 @@ class Unicast[A: Any #share]
 
       while (_queue.size() > 0) and (_request > 0) do
         try
-          sub.on_next(_queue.shift())
+          sub.on_next(_queue.shift()?)
           _request = _request - 1
         end
       end
