@@ -60,7 +60,7 @@ class Broadcast[A: Any #share] is SubscriberManager[A]
     if _max_request == 0 then
       // No subscribers have pending demand.
       if _queue.size().u64() == _qbound then
-        try _queue.shift() end
+        try _queue.shift()? end
       end
 
       _queue.push(a)
@@ -84,7 +84,7 @@ class Broadcast[A: Any #share] is SubscriberManager[A]
     if _queue.size().u64() == _qbound then
       // We have hit our bound and must drop from the queue.
       try
-        _queue.shift()
+        _queue.shift()?
         _queue.push(a)
 
         for (sub, state) in _map.pairs() do
@@ -167,7 +167,7 @@ class Broadcast[A: Any #share] is SubscriberManager[A]
     ManagedPublisher._on_request.
     """
     try
-      let state = _map(sub)
+      let state = _map(sub)?
       var inc = n
 
       if (state.request == 0) and (state.queue_position < _queue.size().u64())
@@ -176,10 +176,10 @@ class Broadcast[A: Any #share] is SubscriberManager[A]
         var count = inc.min(_queue.size().u64() - state.queue_position)
 
         try
-          var node = _queue.index(state.queue_position.usize())
+          var node = _queue.index(state.queue_position.usize())?
 
           for i in Range[U64](0, count) do
-            sub.on_next(node())
+            sub.on_next(node()?)
 
             if node.has_next() then
               node = node.next() as ListNode[A]
@@ -217,7 +217,7 @@ class Broadcast[A: Any #share] is SubscriberManager[A]
     ManagedPublisher._on_cancel.
     """
     try
-      (_, let state) = _map.remove(sub)
+      (_, let state) = _map.remove(sub)?
 
       if
         (state.request == 0) and
@@ -254,7 +254,7 @@ class Broadcast[A: Any #share] is SubscriberManager[A]
     if min_queue_position > 0 then
       try
         for i in Range[U64](0, min_queue_position) do
-          _queue.shift()
+          _queue.shift()?
         end
       end
 
