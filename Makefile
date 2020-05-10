@@ -1,5 +1,5 @@
 BUILD_DIR ?= build
-SRC_DIR ?= reactive-streams
+SRC_DIR ?= reactive_streams
 SOURCE_FILES := $(shell find $(SRC_DIR) -name \*.pony)
 PONYC ?= ponyc
 binary_name := test

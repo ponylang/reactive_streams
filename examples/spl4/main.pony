@@ -1,4 +1,4 @@
-use "../../reactive-streams"
+use "../../reactive_streams"
 use "time"
 use "collections"
 

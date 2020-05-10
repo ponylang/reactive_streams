@@ -7,7 +7,7 @@ actor Main is TestList
     test(_TestOne)
 
 class _TestOne is UnitTest
-  fun name(): String => "reactive-streams/One"
+  fun name(): String => "reactive_streams/One"
 
   fun tag apply(h: TestHelper) =>
     let pub = _TestPublisher(h, 1)
