@@ -1,4 +1,5 @@
-/build/
-examples/spl4/spl4
+/build/*
+TAGS
+tags
 /_repos/*
 /_corral/*
