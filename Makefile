@@ -1,35 +1,61 @@
-BUILD_DIR ?= build
-SRC_DIR ?= reactive_streams
-SOURCE_FILES := $(shell find $(SRC_DIR) -name \*.pony)
-PONYC ?= ponyc
-binary_name := test
-binary :=$(BUILD_DIR)/$(binary_name)
 config ?= release
-arch ?=
 
-ifneq ($(config),release)
-	PONY_FLAGS += --debug
+PACKAGE := reactive_streams
+GET_DEPENDENCIES_WITH := corral fetch
+CLEAN_DEPENDENCIES_WITH := corral clean
+COMPILE_WITH := corral run -- ponyc
+
+BUILD_DIR ?= build/$(config)
+SRC_DIR := $(PACKAGE)
+EXAMPLES_DIR := examples
+tests_binary := $(BUILD_DIR)/$(PACKAGE)
+docs_dir := build/$(PACKAGE)-docs
+
+ifdef config
+	ifeq (,$(filter $(config),debug release))
+		$(error Unknown configuration "$(config)")
+	endif
 endif
 
-ifneq ($(arch),)
-	PONY_FLAGS += --cpu $(arch)
+ifeq ($(config),release)
+	PONYC = $(COMPILE_WITH)
+else
+	PONYC = $(COMPILE_WITH) --debug
 endif
 
-$(binary): $(SOURCE_FILES) | $(BUILD_DIR)
-	${PONYC} $(PONYC_FLAGS) $(SRC_DIR) -o ${BUILD_DIR} -b $(binary_name)
+SOURCE_FILES := $(shell find $(SRC_DIR) -name \*.pony)
+EXAMPLE_SOURCE_FILES := $(shell find $(EXAMPLES_DIR) -name \*.pony)
 
-test: $(binary)
-	$(binary)
+test: unit-tests build-examples
+
+unit-tests: $(tests_binary)
+	$^ --exclude=integration --sequential
+
+$(tests_binary): $(SOURCE_FILES) | $(BUILD_DIR)
+	$(GET_DEPENDENCIES_WITH)
+	$(PONYC) -o ${BUILD_DIR} $(SRC_DIR)
+
+build-examples: $(SOURCE_FILES) $(EXAMPLES_SOURCE_FILES) | $(BUILD_DIR)
+	$(GET_DEPENDENCIES_WITH)
+	find examples/*/* -name '*.pony' -print | xargs -n 1 dirname  | sort -u | grep -v ffi- | xargs -n 1 -I {} $(PONYC) -s --checktree -o $(BUILD_DIR) {}
 
 clean:
+	$(CLEAN_DEPENDENCIES_WITH)
 	rm -rf $(BUILD_DIR)
 
-$(BUILD_DIR)/spl4:
-	${PONYC} $(PONYC_FLAGS) examples/spl4 -o ${BUILD_DIR} -b spl4
+$(docs_dir): $(SOURCE_FILES)
+	rm -rf $(docs_dir)
+	$(GET_DEPENDENCIES_WITH)
+	$(PONYC) --docs-public --pass=docs --output build $(SRC_DIR)
 
-examples: $(BUILD_DIR)/spl4
+docs: $(docs_dir)
+
+TAGS:
+	ctags --recurse=yes $(SRC_DIR)
+
+all: test
 
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
 
-.PHONY: clean
+.PHONY: all clean TAGS test
