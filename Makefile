@@ -24,7 +24,7 @@ else
 endif
 
 SOURCE_FILES := $(shell find $(SRC_DIR) -name \*.pony)
-EXAMPLE_SOURCE_FILES := $(shell find $(EXAMPLES_DIR) -name \*.pony)
+EXAMPLES_SOURCE_FILES := $(shell find $(EXAMPLES_DIR) -name \*.pony)
 
 test: unit-tests build-examples
 
