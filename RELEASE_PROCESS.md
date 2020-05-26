@@ -23,5 +23,5 @@ In this document, we pretend that the new release version is `0.3.1`. Wherever y
 
 ```bash
 git tag release-0.3.1
-git push release-0.3.1
+git push origin release-0.3.1
 ```
