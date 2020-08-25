@@ -1,7 +1,6 @@
 # reactive_streams
 
-Pony implementation of http://www.reactive-streams.org/
-
+Pony implementation of [http://www.reactive-streams.org/](http://www.reactive-streams.org/).
 
 ## Status
 
