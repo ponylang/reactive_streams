@@ -4,8 +4,6 @@ Pony implementation of [http://www.reactive-streams.org/](http://www.reactive-st
 
 ## Status
 
-[![Actions Status](https://github.com/ponylang/reactive_streams/workflows/vs-ponyc-latest/badge.svg)](https://github.com/ponylang/reactive_streams/actions)
-
 Beta
 
 ## Installation
