@@ -13,3 +13,7 @@ Beta
 * `corral fetch` to fetch your dependencies
 * `use "reactive_streams"` to include this package
 * `corral run -- ponyc` to compile your application
+
+## API Documentation
+
+[https://ponylang.github.io/reactive_streams/](https://ponylang.github.io/reactive_streams/)
