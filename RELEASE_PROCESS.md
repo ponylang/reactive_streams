@@ -17,7 +17,7 @@ cd reactive_streams-release-clean
 
 Before getting started, you will need a number for the version that you will be releasing as well as an agreed upon "golden commit" that will form the basis of the release.
 
-The "golden commit" must be `HEAD` on the `master` branch of this repository. At this time, releasing from any other location is not supported.
+The "golden commit" must be `HEAD` on the `main` branch of this repository. At this time, releasing from any other location is not supported.
 
 In this document, we pretend that the new release version is `0.3.1`. Wherever you see those values, please substitute with your own version.
 
