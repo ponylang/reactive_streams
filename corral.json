@@ -1,4 +1,12 @@
 {
+  "packages": ["reactive_streams"],
   "deps": [],
-  "info": {}
+  "info": {
+    "description": "Pony implementation of reactive streams",
+    "homepage": "https://github.com/ponylang/reactive_streams",
+    "license": "BSD-2-Clause",
+    "documentation_url": "https://ponylang.github.io/reactive_streams/",
+    "version": "0.1.0",
+    "name": "reactive_streams"
+  }
 }
