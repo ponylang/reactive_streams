@@ -2,6 +2,8 @@ use "../../reactive_streams"
 use "time"
 use "collections"
 
+use @printf[I32](fmt: Pointer[U8] tag, ...)
+
 primitive Defaults
   fun tag items(): U64 => 1000//1 << 20
   fun tag producers(): U64 => 32
@@ -96,7 +98,7 @@ actor Proc is ManagedPublisher[Bool]
     _broadcast.publish(a)
 
     if _broadcast.queue_size() > 0 then
-      @printf[I32]("PUB %p queue %lu\n".cstring(),
+      @printf("PUB %p queue %lu\n".cstring(),
         this, _broadcast.queue_size())
     end
 
