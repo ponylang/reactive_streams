@@ -1,12 +1,12 @@
 use "ponytest"
 
-actor Main is TestList
+actor \nodoc\ Main is TestList
   new create(env: Env) => PonyTest(env, this)
 
   fun tag tests(test: PonyTest) =>
     test(_TestOne)
 
-class _TestOne is UnitTest
+class \nodoc\ _TestOne is UnitTest
   fun name(): String => "reactive_streams/One"
 
   fun tag apply(h: TestHelper) =>
@@ -15,7 +15,7 @@ class _TestOne is UnitTest
     pub.test_one(sub)
     h.long_test(1_000_000_000)
 
-actor _TestPublisher is ManagedPublisher[U64]
+actor \nodoc\ _TestPublisher is ManagedPublisher[U64]
   let _h: TestHelper
   let _mgr: SubscriberManager[U64]
   let _subs: U64
@@ -51,7 +51,7 @@ actor _TestPublisher is ManagedPublisher[U64]
       sub.test_one_2()
     end
 
-actor _TestSubscriber is Subscriber[U64]
+actor \nodoc\ _TestSubscriber is Subscriber[U64]
   let _h: TestHelper
   let _pub: _TestPublisher
   var _sub: Subscription = NoSubscription
