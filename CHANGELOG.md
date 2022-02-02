@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file. This projec
 
 ### Changed
 
+- Update to work with Pony 0.47.0 ([PR #24](https://github.com/ponylang/reactive_streams/pull/24))
 
 ## [0.1.1] - 2021-02-08
 
