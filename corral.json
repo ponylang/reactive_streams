@@ -8,7 +8,7 @@
     "homepage": "https://github.com/ponylang/reactive_streams",
     "license": "BSD-2-Clause",
     "documentation_url": "https://ponylang.github.io/reactive_streams/",
-    "version": "0.1.1",
+    "version": "0.2.0",
     "name": "reactive_streams"
   }
 }
