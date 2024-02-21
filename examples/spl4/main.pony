@@ -80,7 +80,7 @@ actor Proc is ManagedPublisher[Bool]
   new create() =>
     _broadcast = Broadcast[Bool](this, Defaults.cap())
 
-  fun ref _subscriber_manager(): SubscriberManager[Bool] =>
+  fun ref subscriber_manager(): SubscriberManager[Bool] =>
     _broadcast
 
   be on_subscribe(s: Subscription iso) =>
@@ -142,5 +142,5 @@ actor Pub is ManagedPublisher[Bool]
       end
     end
 
-  fun ref _subscriber_manager(): SubscriberManager[Bool] =>
+  fun ref subscriber_manager(): SubscriberManager[Bool] =>
     _broadcast

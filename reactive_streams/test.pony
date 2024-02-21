@@ -25,7 +25,7 @@ actor _TestPublisher is ManagedPublisher[U64]
     _mgr = Unicast[U64](this, qbounds)
     _subs = subs
 
-  fun ref _subscriber_manager(): SubscriberManager[U64] =>
+  fun ref subscriber_manager(): SubscriberManager[U64] =>
     _mgr
 
   be test_one(sub: _TestSubscriber) =>
