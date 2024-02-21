@@ -1,6 +1,7 @@
 use "../../reactive_streams"
 use "time"
 use "collections"
+use @printf[I32](fmt: Pointer[U8] tag, ...)
 
 primitive Defaults
   fun tag items(): U64 => 1000//1 << 20
