@@ -2,14 +2,15 @@ name: ponyc update breakage test
 
 on:
   repository_dispatch:
-    types: [shared-docker-linux-builders-updated]
+    types:
+      - shared-docker-builders-updated
 
 jobs:
   vs-ponyc-latest:
     name: Test against ponyc main
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/ponylang/shared-docker-ci-standard-builder:release
+      image: ghcr.io/ponylang/shared-docker-ci-standard-builder:nightly
     steps:
       - uses: actions/checkout@v4.1.1
       - name: Test
