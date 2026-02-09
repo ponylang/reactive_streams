@@ -5,6 +5,9 @@ on:
     types:
       - shared-docker-builders-updated
 
+permissions:
+  packages: read
+
 jobs:
   vs-ponyc-latest:
     name: Test against ponyc main
