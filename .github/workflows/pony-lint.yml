@@ -21,4 +21,4 @@ jobs:
     steps:
       - uses: actions/checkout@v6.0.2
       - name: Lint
-        run: pony-lint
+        run: make lint
