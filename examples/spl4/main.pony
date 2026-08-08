@@ -5,7 +5,11 @@ use "collections"
 use @printf[I32](fmt: Pointer[U8] tag, ...)
 
 primitive Defaults
-  fun tag items(): U64 => 1000//1 << 20
+  """
+  Default parameters for the benchmark pipeline.
+  """
+
+  fun tag items(): U64 => 1000 // 1 << 20
   fun tag producers(): U64 => 32
   fun tag processors(): U64 => 32
   fun tag consumers(): U64 => 32
@@ -49,6 +53,11 @@ actor Main
     end
 
 actor Sub is Subscriber[Bool]
+  """
+  Subscriber that counts received items and signals the main actor on
+  completion.
+  """
+
   let _main: Main
   var _count: U64 = 0
   var _sub: Subscription = NoSubscription
@@ -74,6 +83,11 @@ actor Sub is Subscriber[Bool]
     None
 
 actor Proc is ManagedPublisher[Bool]
+  """
+  Processor stage that forwards items from an upstream publisher to
+  downstream subscribers.
+  """
+
   let _broadcast: Broadcast[Bool]
   var _sub: Subscription = NoSubscription
   var _count: U64 = 0
@@ -89,6 +103,10 @@ actor Proc is ManagedPublisher[Bool]
     _sub.request(Defaults.cap())
 
   be on_next(a: Bool) =>
+    """
+    Forward the item downstream and re-request when half the capacity is
+    consumed.
+    """
     _count = _count + 1
 
     if (_count and ((Defaults.cap() >> 1) - 1)) == 0 then
@@ -98,8 +116,11 @@ actor Proc is ManagedPublisher[Bool]
     _broadcast.publish(a)
 
     if _broadcast.queue_size() > 0 then
-      @printf("PUB %p queue %lu\n".cstring(),
-        this, _broadcast.queue_size())
+      @printf(
+        "PUB %p queue %lu\n".cstring(),
+        this,
+        _broadcast.queue_size()
+      )
     end
 
   be on_error(e: ReactiveError) => None
@@ -109,6 +130,11 @@ actor Proc is ManagedPublisher[Bool]
   be attach_to(pub: Pub) => pub.subscribe(this)
 
 actor Pub is ManagedPublisher[Bool]
+  """
+  Source publisher that produces a fixed number of items and distributes
+  them through processor stages.
+  """
+
   let _broadcast: Broadcast[Bool]
   var _remaining: U64
 

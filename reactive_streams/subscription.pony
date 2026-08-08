@@ -37,3 +37,6 @@ interface Subscription
     None
 
 class NoSubscription is Subscription
+  """
+  A no-op subscription used as a default before a real subscription arrives.
+  """
