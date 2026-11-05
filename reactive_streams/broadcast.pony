@@ -178,7 +178,7 @@ class Broadcast[A: Any #share] is SubscriberManager[A]
         try
           var node = _queue.index(state.queue_position.usize())?
 
-          for i in Range[U64](0, count) do
+          for i in Range[U64].till(0, count) do
             sub.on_next(node()?)
 
             if node.has_next() then
@@ -253,7 +253,7 @@ class Broadcast[A: Any #share] is SubscriberManager[A]
 
     if min_queue_position > 0 then
       try
-        for i in Range[U64](0, min_queue_position) do
+        for i in Range[U64].till(0, min_queue_position) do
           _queue.shift()?
         end
       end
