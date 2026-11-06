@@ -10,7 +10,7 @@ Beta
 
 * Requires ponyc 0.78.0 or later.
 * Install [corral](https://github.com/ponylang/corral)
-* `corral add github.com/ponylang/reactive_streams.git --version 0.2.1`
+* `corral add github.com/ponylang/reactive_streams.git --version 0.3.0`
 * `corral fetch` to fetch your dependencies
 * `use "reactive_streams"` to include this package
 * `corral run -- ponyc` to compile your application
