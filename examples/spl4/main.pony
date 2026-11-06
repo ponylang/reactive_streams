@@ -47,7 +47,7 @@ actor Main
     start = Time.nanos()
 
     if (repetitions = repetitions - 1) > 1 then
-      for prod in Range[U64](0, Defaults.producers()) do
+      for prod in Range[U64].till(0, Defaults.producers()) do
         Pub.compute(this)
       end
     end
@@ -142,9 +142,9 @@ actor Pub is ManagedPublisher[Bool]
     _broadcast = Broadcast[Bool](this, Defaults.cap())
     _remaining = Defaults.items()
 
-    for j in Range[U64](0, Defaults.processors()) do
+    for j in Range[U64].till(0, Defaults.processors()) do
       let t = Proc
-      for i in Range[U64](0, Defaults.consumers()) do
+      for i in Range[U64].till(0, Defaults.consumers()) do
         t.subscribe(Sub(main))
       end
       t.attach_to(this)
@@ -159,7 +159,7 @@ actor Pub is ManagedPublisher[Bool]
       if send > 0 then
         _remaining = _remaining - send
 
-        for i in Range[U64](0, send) do
+        for i in Range[U64].till(0, send) do
           _broadcast.publish(true)
         end
 
